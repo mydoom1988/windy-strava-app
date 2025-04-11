@@ -1,9 +1,22 @@
 import axios from "axios";
 import express from "express";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 app.use(cors());
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Pateikiam statinius failus iš public
+app.use(express.static(path.join(__dirname, "public")));
+
+// Paprastas homepage tekstas (jei nenaudoji index.html)
+app.get("/", (req, res) => {
+  res.send("Windy + Strava API veikia. Naudok /activities maršrutui gauti.");
+});
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
